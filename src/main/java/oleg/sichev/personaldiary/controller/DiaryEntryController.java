@@ -26,12 +26,14 @@ public class DiaryEntryController {
     }
 
     @PostMapping("/entries/add")
+    // @Valid - используется для проверки корректно тела запроса (@RequestBody), что все поля заполнены и все хорошо
     public ResponseEntity<?> postDiaryEntry(@Valid @RequestBody DiaryEntryDTO diaryEntryDTO) {
         // все операции происходят в сервисе, в т.ч. сохранение в репозитории
         return ResponseEntity.ok(diaryEntryService.postDiaryEntry(diaryEntryDTO));
     }
 
     @PatchMapping("/entries-edit/{id}")
+    // @Min - это аннотация - проверка, что id будет не меньше единицы. 0 - некорректное значение. Используется вместо @Valid
     public ResponseEntity<?> patchDiaryEntry(@PathVariable @Min(1) Long id, @Valid @RequestBody DiaryEntryDTO diaryEntryDTO) {
         // все операции происходят в сервисе, в т.ч. сохранение в репозитории
         return ResponseEntity.ok(diaryEntryService.patchDiaryEntry(id, diaryEntryDTO));
