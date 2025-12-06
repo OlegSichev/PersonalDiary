@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
-            ) throws ServletException, IOException {
+    ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -41,11 +41,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Извлекаем токен (убираем "Bearer ")
         final String jwt = authHeader.substring(7);
-        final String userEmail = jwtService.extractUsername(jwt);
 
-        // Если email извлечен и пользователь еще не аутентифицирован
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+        // ИЗМЕНИТЕ: extractUsername возвращает username, а не email
+        final String username = jwtService.extractUsername(jwt); // переименуйте переменную
+
+        // Если username извлечен и пользователь еще не аутентифицирован
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             // Проверяем валидность токена
             if (jwtService.isTokenValid(jwt, userDetails)) {

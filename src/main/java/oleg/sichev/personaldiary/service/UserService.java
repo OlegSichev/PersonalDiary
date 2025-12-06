@@ -12,21 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 // @RequiredArgsConstructor - создает конструктор для final полей и для полей помеченных @NonNull
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Spring Security вызывае этот метод при аутентификации
-    // Параметр username - это login
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Ищем пользователя по username (логину)
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "User not found with username: " + username
-                ));
-    }
 
     // Регистрация нового пользователя
     public User registerUser(User user) {
