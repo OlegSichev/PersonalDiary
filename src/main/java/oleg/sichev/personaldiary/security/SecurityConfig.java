@@ -36,7 +36,7 @@ public class SecurityConfig {
                 // Настраиваем авторизацию запросов
                 .authorizeHttpRequests(auth -> auth
                         // Публичные endpoint (доступны без авторизации)
-                        .requestMatchers("/register", "/login").permitAll() // ИЗМЕНИТЕ: /auth/** на /register и /login
+                        .requestMatchers("/auth/**", "/auth/register", "/auth/login").permitAll()
                         .requestMatchers("/public/**").permitAll()
 
                         // Документация, доступная для всех (если буду добавлять)
@@ -64,7 +64,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ДОБАВЬТЕ: метод для создания бина фильтра
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtService, userDetailsService);
