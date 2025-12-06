@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Извлекаем токен (убираем "Bearer ")
         final String jwt = authHeader.substring(7);
 
-        // ИЗМЕНИТЕ: extractUsername возвращает username, а не email
+        // Извлекаем username
         final String username = jwtService.extractUsername(jwt); // переименуйте переменную
 
         // Если username извлечен и пользователь еще не аутентифицирован
