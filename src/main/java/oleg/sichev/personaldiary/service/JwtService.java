@@ -1,4 +1,4 @@
-package oleg.sichev.personaldiary.security;
+package oleg.sichev.personaldiary.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
