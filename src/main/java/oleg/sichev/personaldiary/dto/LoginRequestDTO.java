@@ -3,6 +3,7 @@ package oleg.sichev.personaldiary.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+// Используется для входа в приложение
 @Data
 public class LoginRequestDTO {
 

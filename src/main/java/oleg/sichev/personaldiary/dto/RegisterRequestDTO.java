@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+// Используется для регистрации пользователя в приложении, передается в теле с фронтенда
 @Data
 public class RegisterRequestDTO {
 

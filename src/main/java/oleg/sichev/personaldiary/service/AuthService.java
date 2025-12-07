@@ -29,6 +29,7 @@ public class AuthService {
         user.setSurname(request.getSurname());
         user.setMiddleName(request.getMiddleName());
         user.setPhoneNumber(request.getPhoneNumber());
+        user.setRole("ROLE_USER");
 
         // Сохраняем пользователя
         User savedUser = userService.registerUser(user);
