@@ -36,49 +36,49 @@ public class AdminService {
         if (updateUserDTO == null) {
             logger.info("UpdateUserDTO == null. НИКАКИХ ИЗМЕНЕНИЙ В БАЗУ ДАННЫХ НЕ ВНЕСЕНО.");
         } else {
-            if (!user.getUsername().equals(updateUserDTO.getUsername())) {
+            if (updateUserDTO.getUsername() != null && !user.getUsername().equals(updateUserDTO.getUsername())) {
                 logger.info(messageForLoggerInUpdateUserMethod("Логин", true), user.getUsername(), updateUserDTO.getUsername());
                 user.setUsername(updateUserDTO.getUsername());
             } else {
                 logger.info(messageForLoggerInUpdateUserMethod("Логин", false), user.getUsername());
             }
 
-            if (!user.getName().equals(updateUserDTO.getName())) {
+            if (updateUserDTO.getName() != null && !user.getName().equals(updateUserDTO.getName())) {
                 logger.info(messageForLoggerInUpdateUserMethod("Имя", true), user.getName(), updateUserDTO.getName());
                 user.setName(updateUserDTO.getName());
             } else {
                 logger.info(messageForLoggerInUpdateUserMethod("Имя", false), user.getName());
             }
 
-            if (!user.getSurname().equals(updateUserDTO.getSurname())) {
+            if (updateUserDTO.getSurname() != null && !user.getSurname().equals(updateUserDTO.getSurname())) {
                 logger.info(messageForLoggerInUpdateUserMethod("Фамилия", true), user.getSurname(), updateUserDTO.getSurname());
                 user.setSurname(updateUserDTO.getSurname());
             } else {
                 logger.info(messageForLoggerInUpdateUserMethod("Фамилия", false), user.getSurname());
             }
 
-            if ((!user.getMiddleName().equals(updateUserDTO.getMiddleName()))) {
+            if (updateUserDTO.getMiddleName() != null && (!user.getMiddleName().equals(updateUserDTO.getMiddleName()))) {
                 logger.info(messageForLoggerInUpdateUserMethod("Отчество", true), user.getMiddleName(), updateUserDTO.getMiddleName());
                 user.setMiddleName(updateUserDTO.getMiddleName());
             } else {
                 logger.info(messageForLoggerInUpdateUserMethod("Отчество", false), user.getMiddleName());
             }
 
-            if (!user.getPhoneNumber().equals(updateUserDTO.getPhoneNumber())) {
+            if (updateUserDTO.getPhoneNumber() != null && !user.getPhoneNumber().equals(updateUserDTO.getPhoneNumber())) {
                 logger.info(messageForLoggerInUpdateUserMethod("Телефон", true), user.getPhoneNumber(), updateUserDTO.getPhoneNumber());
                 user.setPhoneNumber(updateUserDTO.getPhoneNumber());
             } else {
                 logger.info(messageForLoggerInUpdateUserMethod("Телефон", false), user.getPhoneNumber());
             }
 
-            if (!user.getEmail().equals(updateUserDTO.getEmail())) {
+            if (updateUserDTO.getEmail() != null && !user.getEmail().equals(updateUserDTO.getEmail())) {
                 logger.info(messageForLoggerInUpdateUserMethod("Email", true), user.getEmail(), updateUserDTO.getEmail());
                 user.setEmail(updateUserDTO.getEmail());
             } else {
                 logger.info(messageForLoggerInUpdateUserMethod("Email", false), user.getEmail());
             }
 
-            if (!user.getRole().equals(updateUserDTO.getRole())) {
+            if (updateUserDTO.getRole() != null && !user.getRole().equals(updateUserDTO.getRole())) {
                 logger.info(messageForLoggerInUpdateUserMethod("Роль", true), user.getRole(), updateUserDTO.getRole());
                 user.setRole(updateUserDTO.getRole());
             } else {
@@ -86,8 +86,10 @@ public class AdminService {
             }
 
             // Password сравнить не можем, поэтому его в конце меняем без if-else. В логе пишем зашифрованный вариант пароля.
-            user.setPassword(passwordEncoder.encode(updateUserDTO.getPassword()));
-            logger.info("Пароль пользователя {} успешно изменен. Зашифрованный пароль выглядит так: {}", user.getUsername(), user.getPassword());
+            if (updateUserDTO.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(updateUserDTO.getPassword()));
+                logger.info("Пароль пользователя {} успешно изменен. Зашифрованный пароль выглядит так: {}", user.getUsername(), user.getPassword());
+            }
         }
 
         return userRepository.save(user);

@@ -50,18 +50,18 @@ public class DiaryEntryService {
             return diaryEntry;
         }
 
-        if (diaryEntryDTO.getTitle().equals(diaryEntry.getTitle()) && diaryEntryDTO.getDescription().equals(diaryEntry.getDescription())) {
+        if (diaryEntryDTO.getTitle() != null && diaryEntryDTO.getDescription() != null && diaryEntryDTO.getTitle().equals(diaryEntry.getTitle()) && diaryEntryDTO.getDescription().equals(diaryEntry.getDescription())) {
             logger.info("ВСЕ ПОЛЯ У diaryEntryDTO И diaryEntry СОВПАДАЮТ, ПОЭТОМУ ИЗМЕНЕНИЙ ВНЕСЕНО НЕ БЫЛО. В БАЗУ ДАННЫХ НИКАКИХ ИЗМЕНЕНИЙ НЕ ВНЕСЕНО.\nDiaryEntryDTO.getTitle(): {}.\nDiaryEntryDTO.getDescription(): {}.\nDiaryEntry.getTitle(): {}.\nDiaryEntry.getDescription(): {}.",
                     diaryEntryDTO.getTitle(), diaryEntryDTO.getDescription(), diaryEntry.getTitle(), diaryEntry.getDescription());
             return diaryEntry;
         } else {
 
-            if (!diaryEntryDTO.getTitle().equals(diaryEntry.getTitle())) {
+            if (diaryEntryDTO.getTitle() != null && !diaryEntryDTO.getTitle().equals(diaryEntry.getTitle())) {
                 logger.info("НАЗВАНИЕ ЗАПИСИ ДНЕВНИКА УСПЕШНО ИЗМЕНЕНО С {} НА {}", diaryEntry.getTitle(), diaryEntryDTO.getTitle());
                 diaryEntry.setTitle(diaryEntryDTO.getTitle());
             }
 
-            if (!diaryEntryDTO.getDescription().equals(diaryEntry.getDescription())) {
+            if (diaryEntryDTO.getDescription() != null && !diaryEntryDTO.getDescription().equals(diaryEntry.getDescription())) {
                 logger.info("ОПИСАНИЕ ЗАПИСИ ДНЕВНИКА УСПЕШНО ИЗМЕНЕНО С {} НА {}", diaryEntry.getDescription(), diaryEntryDTO.getDescription());
                 diaryEntry.setDescription(diaryEntryDTO.getDescription());
             }
