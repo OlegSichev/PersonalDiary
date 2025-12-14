@@ -1,13 +1,18 @@
 package oleg.sichev.personaldiary.service;
 
 import lombok.RequiredArgsConstructor;
+import oleg.sichev.personaldiary.dto.AllUsersResponseDTO;
+import oleg.sichev.personaldiary.entity.DiaryEntry;
 import oleg.sichev.personaldiary.entity.User;
 import oleg.sichev.personaldiary.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 // @RequiredArgsConstructor - создает конструктор для final полей и для полей помеченных @NonNull
@@ -63,5 +68,24 @@ public class UserService {
     // Обновить пользователя
     public User updateUser(User user) {
         return userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AllUsersResponseDTO> getAllUsers(Pageable pageable) {
+        Page<User> page = userRepository.findAllByEnabledIsTrue(pageable);
+
+        return page.map(user -> AllUsersResponseDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .middleName(user.getMiddleName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build()
+        );
     }
 }

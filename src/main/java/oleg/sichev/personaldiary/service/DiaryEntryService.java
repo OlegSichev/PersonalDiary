@@ -38,7 +38,8 @@ public class DiaryEntryService {
                 .description(entry.getDescription())
                 .createdAt(entry.getCreatedAt())
                 .updatedAt(entry.getUpdatedAt())
-                .build());
+                .build()
+        );
 
     }
 
