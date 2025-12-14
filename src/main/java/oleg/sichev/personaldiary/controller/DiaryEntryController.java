@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Min;
 import oleg.sichev.personaldiary.dto.DiaryEntryDTO;
 
 import oleg.sichev.personaldiary.service.DiaryEntryService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +23,10 @@ public class DiaryEntryController {
     }
 
     @GetMapping("/entries")
-    public ResponseEntity<?> getDiaryEntries() {
-        // возвращает json со списком diaryEntries (благодаря RestController - json)
-        return ResponseEntity.ok(diaryEntryService.getDiaryEntries());
+    public ResponseEntity<?> getDiaryEntries(@PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+                                             Pageable pageAble) {
+        // Реализована пагинация, сортируется по дате создания, возвращается по 10 записей на странице. Страницы считаются с 0.
+        return ResponseEntity.ok(diaryEntryService.getDiaryEntries(pageAble));
     }
 
     @PostMapping("/entries/add")

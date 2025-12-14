@@ -1,10 +1,13 @@
 package oleg.sichev.personaldiary.service;
 
 import oleg.sichev.personaldiary.dto.DiaryEntryDTO;
+import oleg.sichev.personaldiary.dto.DiaryEntryResponseDTO;
 import oleg.sichev.personaldiary.entity.DiaryEntry;
 import oleg.sichev.personaldiary.repository.DiaryEntryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +29,17 @@ public class DiaryEntryService {
 
     // Все операции в одну транзакцию - ничего не прервется - ресурсы экономятся - скорость быстрее
     @Transactional(readOnly = true)
-    public List<DiaryEntry> getDiaryEntries() {
-        return diaryEntryRepository.findAllByDeleteIsNull();
+    public Page<DiaryEntryResponseDTO> getDiaryEntries(Pageable pageable) {
+        Page<DiaryEntry> page = diaryEntryRepository.findAllByDeleteIsNull(pageable);
+
+        return page.map(entry -> DiaryEntryResponseDTO.builder()
+                .id(entry.getId())
+                .title(entry.getTitle())
+                .description(entry.getDescription())
+                .createdAt(entry.getCreatedAt())
+                .updatedAt(entry.getUpdatedAt())
+                .build());
+
     }
 
     public DiaryEntry postDiaryEntry(DiaryEntryDTO diaryEntryDTO) {
