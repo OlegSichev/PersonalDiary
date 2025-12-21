@@ -23,7 +23,7 @@ public class JwtService {
     private String secretKey;
 
     // Подтягивает время работы Jwt Token из application.properties (сколько token будет жить, потом пользователя выкинет)
-    @Value(("${jwt.expiration}"))
+    @Value("${jwt.expiration}")
     private long jwtExpiration;
 
     // Извлечь username (email) из токена

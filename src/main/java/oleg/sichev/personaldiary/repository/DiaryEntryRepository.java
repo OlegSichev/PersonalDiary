@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DiaryEntryRepository extends JpaRepository<DiaryEntry, Long> {
-    Optional<DiaryEntry> findByIdAndDeleteIsNull(Long id);
-    List<DiaryEntry> findAllByDeleteIsNull();
-    List<DiaryEntry> findAllByDeleteIsNotNull(); // НИКАКИХ Optional в списке т.к. если записей нет, то вернется пустой список
+    Optional<DiaryEntry> findByIdAndDeletedIsNull(Long id);
+    List<DiaryEntry> findAllByDeletedIsNull();
+    List<DiaryEntry> findAllByDeletedIsNotNull(); // НИКАКИХ Optional в списке т.к. если записей нет, то вернется пустой список
 
-    Page<DiaryEntry> findAllByDeleteIsNull(Pageable pageable);
+    Page<DiaryEntry> findAllByDeletedIsNull(Pageable pageable);
 }

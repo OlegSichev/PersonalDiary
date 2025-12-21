@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 @Service
 @Transactional
 public class DiaryEntryService {
@@ -30,7 +28,7 @@ public class DiaryEntryService {
     // Все операции в одну транзакцию - ничего не прервется - ресурсы экономятся - скорость быстрее
     @Transactional(readOnly = true)
     public Page<DiaryEntryResponseDTO> getDiaryEntries(Pageable pageable) {
-        Page<DiaryEntry> page = diaryEntryRepository.findAllByDeleteIsNull(pageable);
+        Page<DiaryEntry> page = diaryEntryRepository.findAllByDeletedIsNull(pageable);
 
         return page.map(entry -> DiaryEntryResponseDTO.builder()
                 .id(entry.getId())
@@ -53,7 +51,7 @@ public class DiaryEntryService {
 
     public DiaryEntry patchDiaryEntry(Long id, DiaryEntryDTO diaryEntryDTO) {
         // Если null, то выбрасывает ошибку 404, если не null - то продолжаем выполнение метода
-        DiaryEntry diaryEntry = diaryEntryRepository.findByIdAndDeleteIsNull(id).orElseThrow(() -> {
+        DiaryEntry diaryEntry = diaryEntryRepository.findByIdAndDeletedIsNull(id).orElseThrow(() -> {
             logger.error("ОШИБКА! ЗАПИСЬ С ID: {} НЕ НАЙДЕНА В ДНЕВНИКЕ!", id);
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
@@ -83,15 +81,15 @@ public class DiaryEntryService {
     }
 
     public Boolean deleteDiaryEntry(Long id) {
-        DiaryEntry diaryEntry = diaryEntryRepository.findByIdAndDeleteIsNull(id).orElseThrow(() -> {
+        DiaryEntry diaryEntry = diaryEntryRepository.findByIdAndDeletedIsNull(id).orElseThrow(() -> {
             logger.error("ЗАПИСЬ ДНЕВНИКА С ID: {} НЕ НАЙДЕНА!", id);
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
 
-        diaryEntry.setDelete("DELETE");
+        diaryEntry.setDeleted("DELETE");
         diaryEntryRepository.save(diaryEntry);
 
         // возвращаем true, если delete не равен null (то есть, объект мягко удален)
-        return diaryEntry.getDelete() != null;
+        return diaryEntry.getDeleted() != null;
     }
 }
